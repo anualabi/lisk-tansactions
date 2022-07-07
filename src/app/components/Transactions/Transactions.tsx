@@ -7,23 +7,33 @@ import { ErrorMessage } from '../../shared/ui/ErrorMessage';
 import { ContainedButton } from '../../shared/ui/Button';
 
 const Transactions = () => {
-  const { isLoading, isError, data } = useTransaction();
+  const { status, data, error, isFetching, fetchNextPage } = useTransaction();
 
-  if (isLoading) return <Spinner />;
+  if (status === 'loading') return <Spinner />;
 
-  if (isError) return <ErrorMessage message="Transactions not found" />;
+  if (error || !data) return <ErrorMessage message="Transactions not found" />;
 
-  const transactions = data?.data.map((transaction) => (
-    <Card key={transaction.id} sx={{ backgroundColor: 'skyblue', p: 1, m: 1 }}>
-      <p>{transaction.moduleAssetName}</p>
-    </Card>
-  ));
+  const transactions = data.pages.map((page) =>
+    page.data?.map((transaction) => (
+      <Card key={transaction.id} sx={{ backgroundColor: 'skyblue', p: 1, m: 1 }}>
+        <Box>
+          {transaction.moduleAssetName} - {transaction.id}
+        </Box>
+      </Card>
+    ))
+  );
 
   return (
     <Container>
       <Card sx={{ p: 3 }}>
+        {/* List of transactions */}
         <Box>{transactions}</Box>
-        <Box sx={{ textAlign: 'center' }}>
+
+        {/* Show spinner when fetching more data */}
+        {isFetching && <Spinner />}
+
+        {/* Button to fetch more data */}
+        <Box sx={{ textAlign: 'center' }} onClick={() => fetchNextPage()}>
           <ContainedButton text="Show more" />
         </Box>
       </Card>
