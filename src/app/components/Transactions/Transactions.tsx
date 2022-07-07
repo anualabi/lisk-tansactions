@@ -1,6 +1,7 @@
 import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import { useTransaction } from '../../shared/hooks/transaction';
 import { Spinner } from '../../shared/ui/Spinner';
 import { ErrorMessage } from '../../shared/ui/ErrorMessage';
@@ -16,9 +17,9 @@ const Transactions = () => {
   const transactions = data.pages.map((page) =>
     page.data?.map((transaction) => (
       <Card key={transaction.id} sx={{ backgroundColor: 'skyblue', p: 1, m: 1 }}>
-        <Box>
+        <Typography variant="body1" component="h6">
           {transaction.moduleAssetName} - {transaction.id}
-        </Box>
+        </Typography>
       </Card>
     ))
   );

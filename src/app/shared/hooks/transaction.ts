@@ -11,7 +11,8 @@ export function useTransaction() {
     ({ pageParam = 0 }) => fetchData(`${url}&offset=${pageParam}`),
     {
       getNextPageParam: (lastPage) =>
-        lastPage.meta ? lastPage.meta.count + lastPage.meta.offset : undefined
+        lastPage.meta ? lastPage.meta.count + lastPage.meta.offset : undefined,
+      refetchOnWindowFocus: false
     }
   );
 

@@ -1,8 +1,13 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import Transactions from './Transactions';
+import { renderWithQueryClient } from '../../../utils/test';
 
-test('renders NavBar component', () => {
-  render(<Transactions />);
+test('renders response from query', async () => {
+  renderWithQueryClient(<Transactions />);
 
-  expect(screen.getByText('Transactions')).toBeInTheDocument();
+  const transactionTitles = await screen.findAllByRole('heading', {
+    name: /token:transfer|dpos:voteDelegate|dpos:unlockToken/i
+  });
+
+  expect(transactionTitles).toHaveLength(10);
 });
